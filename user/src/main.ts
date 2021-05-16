@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { UserModule } from './user.module';
 import { Transport, TcpOptions } from '@nestjs/microservices';
 
-import { ConfigService } from './services/config/config.service';
+import { ConfigService } from './services/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(UserModule, {

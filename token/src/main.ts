@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { Transport, TcpOptions } from '@nestjs/microservices';
 
 import { TokenModule } from './token.module';
-import { ConfigService } from './services/config/config.service';
+import { ConfigService } from './services/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice(TokenModule, {
@@ -14,4 +14,5 @@ async function bootstrap() {
   } as TcpOptions);
   await app.listenAsync();
 }
+
 bootstrap();

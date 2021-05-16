@@ -1,31 +1,31 @@
 import { Module } from '@nestjs/common';
 import { ClientProxyFactory } from '@nestjs/microservices';
-import { MongooseModule } from '@nestjs/mongoose';
 import { UserController } from './user.controller';
 import { UserService } from './services/user.service';
-import { MongoConfigService } from './services/config/mongo-config.service';
-import { ConfigService } from './services/config/config.service';
-import { UserSchema } from './schemas/user.schema';
-import { UserLinkSchema } from './schemas/user-link.schema';
+import { ConfigService } from './services/config.service';
+import { Connection, createConnection } from 'typeorm';
+
+const databaseProviders = {
+  provide: Connection,
+  useFactory: async (configService: ConfigService) => {
+    return createConnection({
+      type: 'postgres',
+      host: configService.get('databaseHost'),
+      port: configService.get('databasePort'),
+      username: configService.get('databaseUser'),
+      password: configService.get('databasePass'),
+      database: configService.get('databaseName'),
+      entities: [__dirname + './entity/*.entity{.ts,.js}'],
+      migrations: [__dirname + './migrations/*{.ts,.js}'],
+      synchronize: false,
+      logging: false,
+    });
+  },
+  inject: [ConfigService]
+};
 
 @Module({
-  imports: [
-    MongooseModule.forRootAsync({
-      useClass: MongoConfigService,
-    }),
-    MongooseModule.forFeature([
-      {
-        name: 'User',
-        schema: UserSchema,
-        collection: 'users',
-      },
-      {
-        name: 'UserLink',
-        schema: UserLinkSchema,
-        collection: 'user_links',
-      },
-    ]),
-  ],
+  exports: [databaseProviders],
   controllers: [UserController],
   providers: [
     UserService,
@@ -38,6 +38,7 @@ import { UserLinkSchema } from './schemas/user-link.schema';
       },
       inject: [ConfigService],
     },
+    databaseProviders
   ],
 })
-export class UserModule {}
+export class UserModule { }

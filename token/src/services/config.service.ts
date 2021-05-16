@@ -3,8 +3,10 @@ export class ConfigService {
 
   constructor() {
     this.envConfig = {
-      port: process.env.TASK_SERVICE_PORT,
+      port: process.env.TOKEN_SERVICE_PORT,
     };
+    this.envConfig.ACCESS_EXP = process.env.ACCESS_EXP;
+    this.envConfig.REFRESH_EXP = process.env.REFRESH_EXP;
   }
 
   get(key: string): any {
