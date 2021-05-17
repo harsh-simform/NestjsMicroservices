@@ -10,21 +10,22 @@ services:
       - "8000:8000"
     networks:
       - backend
-      - frontend
   token:
     build: ./token
     restart: always
     hostname: token
+    ports:
+      - ${TOKEN_SERVICE_PORT}:${TOKEN_SERVICE_PORT}
     env_file:
       - .env
     networks:
       - backend
-    links:
-      - db
   mailer:
     build: ./mailer
     restart: always
     hostname: mailer
+    ports:
+      - ${MAILER_SERVICE_PORT}:${MAILER_SERVICE_PORT}
     env_file:
       - .env
     networks:
@@ -33,31 +34,14 @@ services:
     build: ./user
     restart: always
     hostname: user
+    ports:
+      - ${USER_SERVICE_PORT}:${USER_SERVICE_PORT}
     env_file:
       - .env
     networks:
       - backend
     links:
       - mailer
-      - db
-  db:
-    image: "postgres" 
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    volumes:
-      - database-data:/var/lib/postgresql/data/
-    ports:
-      - 5431:5432
-    networks:
-      - backend
 networks:
   backend:
     driver: bridge
-  frontend:
-    external:
-      name: infrastructure
-volumes:
-  database-data: 

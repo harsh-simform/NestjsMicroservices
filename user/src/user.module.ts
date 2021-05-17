@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { UserService } from './services/user.service';
 import { ConfigService } from './services/config.service';
 import { Connection, createConnection } from 'typeorm';
+import { User } from './entity/user.entity';
 
 const databaseProviders = {
   provide: Connection,
@@ -15,9 +16,9 @@ const databaseProviders = {
       username: configService.get('databaseUser'),
       password: configService.get('databasePass'),
       database: configService.get('databaseName'),
-      entities: [__dirname + './entity/*.entity{.ts,.js}'],
-      migrations: [__dirname + './migrations/*{.ts,.js}'],
-      synchronize: false,
+      entities: [User],
+      migrations: ['migrations/*{.ts,.js}'],
+      synchronize: true,
       logging: false,
     });
   },

@@ -1,7 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-
-@Entity('user')
-export class UserAccount {
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+@Entity('nest_user')
+export class User {
     @PrimaryGeneratedColumn()
     public id: number;
 
@@ -13,4 +12,10 @@ export class UserAccount {
 
     @Column('varchar')
     public phone: string;
+
+    @CreateDateColumn()
+    public createdAt: Date;
+
+    @UpdateDateColumn()
+    public updatedAt: Date;
 }

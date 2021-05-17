@@ -20,20 +20,6 @@ export class ConfigService {
       },
       transport: Transport.TCP,
     };
-    this.envConfig.taskService = {
-      options: {
-        port: process.env.TASK_SERVICE_PORT,
-        host: process.env.TASK_SERVICE_HOST,
-      },
-      transport: Transport.TCP,
-    };
-    this.envConfig.permissionService = {
-      options: {
-        port: process.env.PERMISSION_SERVICE_PORT,
-        host: process.env.PERMISSION_SERVICE_HOST,
-      },
-      transport: Transport.TCP,
-    };
   }
 
   get(key: string): any {
